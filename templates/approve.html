@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style media="screen">
+      * {
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        margin: 0;
+      }
+      img{
+          width:100%;
+          max-width:200px;
+      }
+    </style>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../static/styledashboard.css">
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on( 'connect', function() {
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let username = $( 'input.username' ).val()
+          socket.emit( 'status_query', {
+            username : username
+          } )
+          $( 'input.username' ).val( '' ).focus()
+        } )
+      } )
+
+      socket.on( 'add_response', function( msg ) {
+        console.log(msg)
+        if( typeof msg.query_response !== 'undefined' ) {
+          $( 'div.answer' ).append( '<div><b style="color: #212529">'+msg.query_response+'</b></div>' )
+        }
+      })
+    </script>
+
+    <script>
+    function untoggleImage(){
+      var img2 = "./static/sample.png";
+      var imgElement = document.getElementById('toggleImage');
+      imgElement.src =  img2;
+    }
+    function toggleImage() {
+       var img1 = "{{qr}}";
+       var imgElement = document.getElementById('toggleImage');
+       imgElement.src =  img1;
+       setTimeout(untoggleImage, 5000);
+    }
+
+
+    </script>
+		<div class="container d-md-flex align-items-stretch">
+      <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+        <div class="session">
+          <h2 class="mb-4">Manage users</h2>
+
+          <form action="" method="POST">
+            <label for="Username">Username</label>
+            <input type="text" id="username" placeholder="Username" name="Username" class="username">
+            <button type="submit">Submit</button>
+
+          </form>
+            <div class="answer"></div>
+            </div>
+          </div>
+
+
+
+      <nav id="sidebar">
+				<div class="p-4 pt-5">
+					<h5>Categories</h5>
+
+	        <ul class="list-unstyled components mb-5">
+
+	          <li>
+	            <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Hardware settings</a>
+	            <ul class="collapse list-unstyled" id="pageSubmenu1">
+                <li><a href="/axis"><span class="fa fa-chevron-right mr-2"></span> Axis</a></li>
+                <li><a href="/controls"><span class="fa fa-chevron-right mr-2"></span> Controls</a></li>
+              </ul>
+	          </li>
+
+	          <li>
+	            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Software settings</a>
+	            <ul class="collapse list-unstyled" id="pageSubmenu2">
+                <li><a href="/sysinfo"><span class="fa fa-chevron-right mr-2"></span> System info</a></li>
+                <li><a href="/alltasks"><span class="fa fa-chevron-right mr-2"></span> See all running tasks</a></li>
+                <li><a href="/newtask"><span class="fa fa-chevron-right mr-2"></span> Run task</a></li>
+	            </ul>
+	          </li>
+
+            <li>
+              <a href="#pageSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Users settings</a>
+              <ul class="collapse list-unstyled" id="pageSubmenu3">
+                <li><a href="/dbmanager"><span class="fa fa-chevron-right mr-2"></span> Make database query</a></li>
+                <li><a href="/approve"><span class="fa fa-chevron-right mr-2"></span> Approve user</a></li>
+                <li><a href="/logout"><span class="fa fa-chevron-right mr-2"></span> Logout</a></li>
+              </ul>
+            </li>
+
+	        </ul>
+					<div class="mb-5">
+						<h5>Tag Cloud</h5>
+            <div class="tagcloud">
+              <a href="/hardware" class="tag-cloud-link">Hardware settings</a>
+              <a href="/users" class="tag-cloud-link">Users</a>
+            </div>
+            <h5>Session info:</h5>
+            Project: {{projectname}}<br>
+            Session ID: {{coockieid}}<br>
+
+					</div>
+	      </div>
+    	</nav>
+		</div>
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/popper.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/main.js"></script>
+  </body>
+</html>
