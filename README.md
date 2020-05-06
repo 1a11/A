@@ -1,1 +1,1 @@
-#Работать!
+OSX incompatible
