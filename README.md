@@ -1,1 +1,1 @@
-OSX incompatible
+OSX compatible
