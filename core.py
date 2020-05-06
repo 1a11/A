@@ -179,7 +179,7 @@ def run():
         with open("./config.json", "r", encoding='utf8') as read_file:
             data = json.load(read_file)
         sysinfo = heartbeat.get_statistics()
-        if sysinfo['cuda'] == 'Not instaled':
+        if sysinfo['cuda'] == 'Not Installed':
             return render_template('sysinfo.html',projectname='Astra',coockieid=request.cookies.get('coockieid'),\
                                    pc_name=data['pc_name'],pc_desctiption=data['pc_desctiption'],pc_cpu_load=(str(sysinfo['cpu_load'])+'%'),\
                                    pc_ram_free=str(round(sysinfo['ram']['available']/1024/1024/1024,2))+'GB',pc_ram_used=str(sysinfo['ram']['percent'])+'%',pc_speed_upload=str(round(sysinfo['network_latency']['upload']/1024/1024,2))+'mbit/s',\
