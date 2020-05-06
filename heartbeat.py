@@ -1,11 +1,14 @@
-
+# -*- coding: utf-8 -*-
 import os
 import subprocess
 import re
 import shutil
 import psutil
-import wmi
 import speedtest
+import ssl
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+    getattr(ssl, '_create_unverified_context', None)):
+    ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_cpuload():
     """
@@ -29,10 +32,6 @@ def get_statistics():
     matcher = re.compile('\d+')
     # Top command on mac displays and updates sorted information about processes.
 
-    top_command = []
-    c = wmi.WMI ()
-    for process in c.Win32_Process ():
-        top_command.append((process.ProcessId, process.Name))
 
     # Get Physical and Logical CPU Count
     physical_and_logical_cpu_count = os.cpu_count()
